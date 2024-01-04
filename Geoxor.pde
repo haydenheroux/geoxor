@@ -93,13 +93,13 @@ class Rectangle {
 Rectangle generate() {
   color c = colors[int(random(0, colors.length))];
   
-  float xOffset = random(40, 120);
+  float xOffset = random(40, 360);
   float xDirection = random(-1, 1);
   xOffset = xOffset * xDirection / abs(xDirection);
   
-  float y = random(20, 700);
+  float y = random(20, height - 20);
   float size = random(15, 60);
-  float duration = random(60, 180);
+  float duration = 180;
     
   return new Rectangle(c, (width / 2) + int(xOffset), int(y), int(size), xOffset > 0, int(duration));
 }
@@ -113,12 +113,13 @@ float parametric(float t) {
 color kBackground = color(45, 19, 67);
 color[] colors = new color[3];
 
-final int count = 10;
+final int count = 8;
 Rectangle[] rectangles = new Rectangle[count];
 
 
 void setup() {
-  size(1280, 720);
+  size(1920, 1080);
+  fullScreen();
   frameRate(60);
   
   colors[0] = color(28, 155, 220);
@@ -135,9 +136,7 @@ void draw() {
   background(kBackground);
 
   for (int i = 0; i < count; i++) {
-    Rectangle rectangle = rectangles[i];
-    
-    if (rectangle.isDead()) {
+    if (rectangles[i].isDead() && random(0, 1) > 0.6) {
       rectangles[i] = generate();
     }
     
