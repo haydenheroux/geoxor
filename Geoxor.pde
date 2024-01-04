@@ -13,15 +13,10 @@ class Rectangle {
   
   private boolean m_dead = false;
 
-  public Rectangle(color c, int x, int initialWidth, int y, int size, boolean leftToRight, int duration) {
+  public Rectangle(color c, int x, int y, int size, boolean leftToRight, int duration) {
     m_color = c;
     m_startX = x;
-
-    if (leftToRight) {
-      m_endX = x + initialWidth;
-    } else {
-      m_endX = x - initialWidth;
-    }
+    m_endX = x;
 
     m_y = y;
     m_size = size;
@@ -40,13 +35,13 @@ class Rectangle {
       return;
     }
 
-    float velocityScalar = 16;
+    float velocityScalar = 12;
 
     if (!m_leftToRight) {
       velocityScalar *= -1;
     }
 
-    float shape = parametric(t);
+    float shape = sqrt(t);
 
     if (t < 0.8) {
       m_endX += shape * velocityScalar;
@@ -64,6 +59,14 @@ class Rectangle {
       if (m_endX > m_startX) {
         m_dead = true;
       }
+    }
+    
+    if (m_leftToRight && m_startX > width) {
+      m_dead = true;
+    }
+    
+    if (!m_leftToRight && m_startX < 0) {
+      m_dead = true;
     }
     
   }
@@ -89,13 +92,16 @@ class Rectangle {
 
 Rectangle generate() {
   color c = colors[int(random(0, colors.length))];
-  float xOffset = random(-120, 120);
-  float initialWidth = random(20, 60);
-  float y = random(20, 720);
+  
+  float xOffset = random(40, 120);
+  float xDirection = random(-1, 1);
+  xOffset = xOffset * xDirection / abs(xDirection);
+  
+  float y = random(20, 700);
   float size = random(15, 60);
   float duration = random(60, 180);
     
-  return new Rectangle(c, (width / 2) + int(xOffset), int(initialWidth), int(y), int(size), xOffset > 0, int(duration));
+  return new Rectangle(c, (width / 2) + int(xOffset), int(y), int(size), xOffset > 0, int(duration));
 }
 
 float parametric(float t) {
@@ -107,7 +113,7 @@ float parametric(float t) {
 color kBackground = color(45, 19, 67);
 color[] colors = new color[3];
 
-final int count = 20;
+final int count = 10;
 Rectangle[] rectangles = new Rectangle[count];
 
 
