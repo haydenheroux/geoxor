@@ -3,27 +3,31 @@ class Rectangle {
   private final color m_color;
 
   private int m_steps = 0;
-  private final int m_duration = 100;
+  private final int m_duration;
 
   private float m_startX, m_endX;
 
   private final int m_y, m_size;
 
-  private final boolean m_reversed;
+  private final boolean m_leftToRight;
+  
+  private boolean m_dead = false;
 
-  public Rectangle(color c, int x, int initialWidth, int y, int size, boolean reversed) {
+  public Rectangle(color c, int x, int initialWidth, int y, int size, boolean leftToRight, int duration) {
     m_color = c;
     m_startX = x;
 
-    if (reversed) {
-      m_endX = x - initialWidth;
-    } else {
+    if (leftToRight) {
       m_endX = x + initialWidth;
+    } else {
+      m_endX = x - initialWidth;
     }
 
     m_y = y;
     m_size = size;
-    m_reversed = reversed;
+    m_leftToRight = leftToRight;
+    
+    m_duration = duration;
   }
 
   public void animate() {
@@ -31,9 +35,14 @@ class Rectangle {
 
     float t = float(m_steps) / float(m_duration);
 
+    if (t > 1.0) {
+      m_dead = true;
+      return;
+    }
+
     float velocityScalar = 16;
 
-    if (m_reversed) {
+    if (!m_leftToRight) {
       velocityScalar *= -1;
     }
 
@@ -47,30 +56,46 @@ class Rectangle {
       m_startX += shape * velocityScalar;
     }
 
-    if (m_reversed) {
-      if (m_endX > m_startX) {
-        m_endX = m_startX;
+    if (m_leftToRight) {
+      if (m_endX < m_startX) {
+        m_dead = true;
       }
     } else {
-      if (m_endX < m_startX) {
-        m_endX = m_startX;
+      if (m_endX > m_startX) {
+        m_dead = true;
       }
     }
+    
   }
 
   public void draw() {
-    if (m_steps > m_duration) {
+    if (m_dead) {
       return;
     }
 
     drawRect(m_startX, m_endX);
   }
 
-  public void drawRect(float startX, float endX) {
+  private void drawRect(float left, float right) {
     fill(m_color);
     noStroke();
-    rect(startX, m_y, endX - startX, m_size);
+    rect(left, m_y, right - left, m_size);
   }
+  
+  public boolean isDead() {
+    return m_dead;
+  }
+}
+
+Rectangle generate() {
+  color c = colors[int(random(0, colors.length))];
+  float xOffset = random(-120, 120);
+  float initialWidth = random(20, 60);
+  float y = random(20, 720);
+  float size = random(15, 60);
+  float duration = random(60, 180);
+    
+  return new Rectangle(c, (width / 2) + int(xOffset), int(initialWidth), int(y), int(size), xOffset > 0, int(duration));
 }
 
 float parametric(float t) {
@@ -82,7 +107,8 @@ float parametric(float t) {
 color kBackground = color(45, 19, 67);
 color[] colors = new color[3];
 
-Rectangle[] rectangles = new Rectangle[10];
+final int count = 20;
+Rectangle[] rectangles = new Rectangle[count];
 
 
 void setup() {
@@ -93,14 +119,8 @@ void setup() {
   colors[1] = color(255, 7, 189);
   colors[2] = color(33, 13, 54);
   
-  for (int i = 0; i < 10; i++) {
-    color c = colors[int(random(0, colors.length))];
-    float xOffset = random(-80, 80);
-    float initialWidth = random(20, 40);
-    float y = random(20, 720);
-    float size = random(15, 60);
-    
-    rectangles[i] = new Rectangle(c, (width / 2) + int(xOffset), int(initialWidth), int(y), int(size), xOffset < 0);
+  for (int i = 0; i < count; i++) {
+    rectangles[i] = generate();
   }
 
 }
@@ -108,7 +128,13 @@ void setup() {
 void draw() {
   background(kBackground);
 
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < count; i++) {
+    Rectangle rectangle = rectangles[i];
+    
+    if (rectangle.isDead()) {
+      rectangles[i] = generate();
+    }
+    
     rectangles[i].animate();
     rectangles[i].draw();
   }
