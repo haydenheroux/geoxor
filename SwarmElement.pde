@@ -39,7 +39,7 @@ class SwarmElement {
       return;
     }
 
-    float velocityScalar = 12;
+    float velocityScalar = 24;
 
     if (!m_leftToRight) {
       velocityScalar *= -1;
@@ -94,11 +94,11 @@ class SwarmElement {
   }
 }
 
-RandomNumberGenerator durationOffsetGenerator = new RandomNumberGenerator(0, 20, true);
+RandomNumberGenerator durationOffsetGenerator = new RandomNumberGenerator(0, 80, true);
 
 public SwarmElement createSwarmElement(Span span, boolean leftToRight) {
   color c = randomColor();
-  float xOffset = random(40, 360);
+  float xOffset = random(40, 560);
   
   float x;
   
@@ -110,7 +110,7 @@ public SwarmElement createSwarmElement(Span span, boolean leftToRight) {
   
   float size = min(random(20, span.size()), 40);
   float y = random(span.start, span.end - size);
-  float duration = 200 + durationOffsetGenerator.generate();
+  float duration = 120 + durationOffsetGenerator.generate();
     
   return new SwarmElement(c, int(x), int(y), int(size), leftToRight, int(duration));
 }

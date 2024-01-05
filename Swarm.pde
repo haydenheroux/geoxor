@@ -26,19 +26,19 @@ class Swarm {
   }
   
   public void repopulate() {
-    int count = 0;
+    int removed = 0;
     
     for (int i = elements.size() - 1; i >= 0; i--) {
       SwarmElement element = elements.get(i);
       if (element.dead()) {
         elements.remove(i);
-        count++;
+        removed++;
       }
     }
     
     updateSpawnMask();
 
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < removed; i++) {
       if (spawnMask.isEmpty()) return;
       
       Span span = spawnMask.get(int(random(0, spawnMask.size())));
