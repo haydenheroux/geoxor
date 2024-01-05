@@ -24,6 +24,10 @@ class SwarmElement {
     
     m_duration = duration;
   }
+  
+  public Span span() {
+    return new Span(m_y, m_y + m_size);
+  }
 
   public void animate() {
     m_steps++;
@@ -91,15 +95,13 @@ class SwarmElement {
 }
 
 RandomNumberGenerator xOffsetGenerator = new RandomNumberGenerator(40, 360, true);
-RandomNumberGenerator yCoordinateGenerator = new RandomNumberGenerator(20, 1060);
-RandomNumberGenerator sizeGenerator = new RandomNumberGenerator(15, 60);
 RandomNumberGenerator durationOffsetGenerator = new RandomNumberGenerator(0, 20, true);
 
-public SwarmElement createSwarmElement() {
+public SwarmElement createSwarmElement(Span span) {
   color c = randomColor();
   float x = (width / 2) + xOffsetGenerator.generate();
-  float y = yCoordinateGenerator.generate();
-  float size = sizeGenerator.generate();
+  float size = min(new RandomNumberGenerator(15, span.size()).generate(), 60);
+  float y = new RandomNumberGenerator(span.start, span.end - size).generate();
   float duration = 200 + durationOffsetGenerator.generate();
     
   return new SwarmElement(c, int(x), int(y), int(size), x > (width / 2), int(duration));
