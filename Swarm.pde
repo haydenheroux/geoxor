@@ -3,16 +3,20 @@ import java.util.List;
 
 class Swarm {
 
+  private final boolean leftToRight;
+  
   private final ArrayList<SwarmElement> elements = new ArrayList<SwarmElement>();
   
   public ArrayList<Span> spawnMask = new ArrayList<Span>();
   
-  public Swarm(int count) {
+  public Swarm(int count, boolean leftToRight) {
     for (int i = 0; i < count; i++) {
-      elements.add(createSwarmElement(new Span(0, height)));
+      elements.add(createSwarmElement(new Span(0, height), leftToRight));
       
       updateSpawnMask();
     }
+    
+    this.leftToRight = leftToRight;
   }
   
   public ArrayList<Span> spans() {
@@ -41,7 +45,7 @@ class Swarm {
     for (int i = 0; i < count; i++) {
       Span span = spawnMask.get(int(random(0, spawnMask.size())));
       
-      elements.add(createSwarmElement(span));
+      elements.add(createSwarmElement(span, this.leftToRight));
       updateSpawnMask();
     }
   }

@@ -1,5 +1,4 @@
-Swarm swarm;
-Span vertical;
+Swarm left, right;
 
 void setup() {
   size(1920, 1080);
@@ -7,17 +6,18 @@ void setup() {
   frameRate(60);
   
   initializePalette();
-  swarm = new Swarm(14);
-  
-  vertical = new Span(0, height);
+  left = new Swarm(14, false);
+  right = new Swarm(14, true);
 }
 
 void draw() {
   background(kBackground);
   
-  swarm.animate();
-
-  swarm.repopulate();
+  left.animate();
+  left.repopulate();
+  left.draw();
   
-  swarm.draw();
+  right.animate();
+  right.repopulate();
+  right.draw();
 }
