@@ -6,7 +6,7 @@ void setup() {
   frameRate(60);
   
   initializePalette();
-  swarm = new Swarm(10);
+  swarm = new Swarm(14);
 }
 
 void draw() {
