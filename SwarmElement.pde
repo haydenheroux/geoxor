@@ -98,19 +98,15 @@ RandomNumberGenerator durationOffsetGenerator = new RandomNumberGenerator(0, 80,
 
 public SwarmElement createSwarmElement(Span span, boolean leftToRight) {
   color c = randomColor();
-  float xOffset = random(40, 560);
+  float xOffset = random(-560, 560);
   
-  float x;
-  
-  if (leftToRight) {
-    x = width / 2 + xOffset;
-  } else {
-    x = width / 2 - xOffset;
-  }
+  float x = width / 2 + xOffset;
   
   float size = min(random(20, span.size()), 40);
   float y = random(span.start, span.end - size);
   float duration = 120 + durationOffsetGenerator.generate();
+  
+  boolean _leftToRight = random(0, 1) < 0.5;
     
-  return new SwarmElement(c, int(x), int(y), int(size), leftToRight, int(duration));
+  return new SwarmElement(c, int(x), int(y), int(size), _leftToRight, int(duration));
 }
