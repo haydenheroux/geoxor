@@ -93,13 +93,14 @@ class SwarmElement {
 RandomNumberGenerator xOffsetGenerator = new RandomNumberGenerator(40, 360, true);
 RandomNumberGenerator yCoordinateGenerator = new RandomNumberGenerator(20, 700);
 RandomNumberGenerator sizeGenerator = new RandomNumberGenerator(15, 60);
+RandomNumberGenerator durationOffsetGenerator = new RandomNumberGenerator(0, 20, true);
 
 public SwarmElement createSwarmElement() {
   color c = randomColor();
   float xOffset = xOffsetGenerator.generate();
   float y = yCoordinateGenerator.generate();
   float size = sizeGenerator.generate();
-  float duration = 180;
+  float duration = 200 + durationOffsetGenerator.generate();
     
   return new SwarmElement(c, (width / 2) + int(xOffset), int(y), int(size), xOffset > 0, int(duration));
 }
