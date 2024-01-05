@@ -20,10 +20,4 @@ void draw() {
   swarm.repopulate();
   
   swarm.draw();
-  
-  stroke(255);
-  
-  for (Span span : swarm.spawnMask) {
-    line(320, span.start, 320, span.end);
-  }
 }

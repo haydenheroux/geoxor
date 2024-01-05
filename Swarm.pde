@@ -1,4 +1,5 @@
 import java.util.stream.Collectors;
+import java.util.List;
 
 class Swarm {
 
@@ -15,7 +16,9 @@ class Swarm {
   }
   
   public ArrayList<Span> spans() {
-    return new ArrayList<Span>(elements.stream().map(SwarmElement::span).collect(Collectors.toList()));
+    List<Span> spans = elements.stream().map(SwarmElement::span).collect(Collectors.toList());
+    
+    return new ArrayList<Span>(spans);
   }
   
   public void repopulate() {
@@ -28,6 +31,8 @@ class Swarm {
         count++;
       }
     }
+    
+    updateSpawnMask();
     
     if (spawnMask.isEmpty()) {
       return;
@@ -42,7 +47,11 @@ class Swarm {
   }
   
   public void updateSpawnMask() {
-    spawnMask = new ArrayList<Span>(new Span(0, height).mask(this.spans()).stream().filter(span -> span.size() > 60).collect(Collectors.toList()));
+    ArrayList<Span> spaces = new Span(0, height).mask(this.spans());
+    
+    List<Span> largeSpaces = spaces.stream().filter(span -> span.size() > 60).collect(Collectors.toList());
+    
+    spawnMask = new ArrayList(largeSpaces);
   }
   
   public void animate() {
