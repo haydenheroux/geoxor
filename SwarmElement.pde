@@ -94,12 +94,11 @@ class SwarmElement {
   }
 }
 
-RandomNumberGenerator xOffsetGenerator = new RandomNumberGenerator(40, 360);
 RandomNumberGenerator durationOffsetGenerator = new RandomNumberGenerator(0, 20, true);
 
 public SwarmElement createSwarmElement(Span span, boolean leftToRight) {
   color c = randomColor();
-  float xOffset = xOffsetGenerator.generate();
+  float xOffset = random(40, 360);
   
   float x;
   
@@ -109,8 +108,8 @@ public SwarmElement createSwarmElement(Span span, boolean leftToRight) {
     x = width / 2 - xOffset;
   }
   
-  float size = min(new RandomNumberGenerator(15, span.size()).generate(), 60);
-  float y = new RandomNumberGenerator(span.start, span.end - size).generate();
+  float size = min(random(20, span.size()), 40);
+  float y = random(span.start, span.end - size);
   float duration = 200 + durationOffsetGenerator.generate();
     
   return new SwarmElement(c, int(x), int(y), int(size), leftToRight, int(duration));

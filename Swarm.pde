@@ -37,12 +37,10 @@ class Swarm {
     }
     
     updateSpawnMask();
-    
-    if (spawnMask.isEmpty()) {
-      return;
-    }
-    
+
     for (int i = 0; i < count; i++) {
+      if (spawnMask.isEmpty()) return;
+      
       Span span = spawnMask.get(int(random(0, spawnMask.size())));
       
       elements.add(createSwarmElement(span, this.leftToRight));
