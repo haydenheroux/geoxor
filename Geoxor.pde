@@ -1,4 +1,4 @@
-int paletteSelector = 2;
+int paletteSelector = int(random(0, 6));
 
 Swarm swarm;
 
@@ -17,10 +17,6 @@ void draw() {
   swarm.animate();
   int culled = swarm.cull();
   int respawned = swarm.spawn(culled);
-  
-  if (respawned < culled) {
-    println(culled - respawned);
-  }
   
   swarm.draw();
 }
