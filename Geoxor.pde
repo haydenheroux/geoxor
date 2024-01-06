@@ -16,7 +16,7 @@ void draw() {
   
   swarm.animate();
   int culled = swarm.cull();
-  int respawned = swarm.spawn(culled);
+  swarm.spawn(culled);
   
   swarm.draw();
 }
