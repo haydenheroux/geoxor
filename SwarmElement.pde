@@ -1,6 +1,6 @@
 class SwarmElement {
 
-  private final color m_color;
+  private final int m_paletteIndex;
 
   private int m_steps = 0;
   private final int m_duration;
@@ -13,8 +13,8 @@ class SwarmElement {
   
   private boolean m_dead = false;
 
-  public SwarmElement(color c, int x, int y, int size, boolean leftToRight, int duration) {
-    m_color = c;
+  public SwarmElement(int paletteIndex, int x, int y, int size, boolean leftToRight, int duration) {
+    m_paletteIndex = paletteIndex;
     m_startX = x;
     m_endX = x;
 
@@ -84,7 +84,7 @@ class SwarmElement {
   }
 
   private void drawRect(float left, float right) {
-    fill(m_color);
+    fill(palette[m_paletteIndex]);
     noStroke();
     rect(left, m_y, right - left, m_size);
   }
@@ -97,7 +97,7 @@ class SwarmElement {
 RandomNumberGenerator durationOffsetGenerator = new RandomNumberGenerator(0, 80, true);
 
 public SwarmElement createSwarmElement(Span span, boolean leftToRight) {
-  color c = randomColor();
+  int paletteIndex = int(random(1, palette.length));
   float xOffset = random(-560, 560);
   
   float x = width / 2 + xOffset;
@@ -108,5 +108,5 @@ public SwarmElement createSwarmElement(Span span, boolean leftToRight) {
   
   boolean _leftToRight = random(0, 1) < 0.5;
     
-  return new SwarmElement(c, int(x), int(y), int(size), _leftToRight, int(duration));
+  return new SwarmElement(paletteIndex, int(x), int(y), int(size), _leftToRight, int(duration));
 }

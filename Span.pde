@@ -28,6 +28,8 @@ class Span {
   }
   
   private ArrayList<Span> merge(ArrayList<Span> spans) {
+    if (spans.isEmpty()) return spans;
+    
     Stack<Span> stack = new Stack<Span>();
   
     spans.sort(this::compareStart);

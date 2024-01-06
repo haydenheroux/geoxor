@@ -10,13 +10,9 @@ class Swarm {
   public ArrayList<Span> spawnMask = new ArrayList<Span>();
   
   public Swarm(int count, boolean leftToRight) {
-    for (int i = 0; i < count; i++) {
-      elements.add(createSwarmElement(new Span(0, height), leftToRight));
-      
-      updateSpawnMask();
-    }
-    
     this.leftToRight = leftToRight;
+    
+    this.spawn(count);
   }
   
   public ArrayList<Span> spans() {
@@ -25,7 +21,7 @@ class Swarm {
     return new ArrayList<Span>(spans);
   }
   
-  public void repopulate() {
+  public int cull() {
     int removed = 0;
     
     for (int i = elements.size() - 1; i >= 0; i--) {
@@ -38,14 +34,27 @@ class Swarm {
     
     updateSpawnMask();
 
-    for (int i = 0; i < removed; i++) {
-      if (spawnMask.isEmpty()) return;
+    return removed;
+  }
+  
+  public int spawn(int maximum) {
+    updateSpawnMask();
+    
+    int spawned = 0;
+    
+    for (int i = 0; i < maximum; i++) {
+      if (spawnMask.isEmpty()) break;
       
-      Span span = spawnMask.get(int(random(0, spawnMask.size())));
+      Span randomSpan = spawnMask.get(int(random(0, spawnMask.size())));
       
-      elements.add(createSwarmElement(span, this.leftToRight));
+      elements.add(createSwarmElement(randomSpan, this.leftToRight));
+      
+      spawned++;
+      
       updateSpawnMask();
     }
+    
+    return spawned;
   }
   
   public void updateSpawnMask() {

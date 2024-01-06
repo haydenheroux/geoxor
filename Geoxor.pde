@@ -1,3 +1,5 @@
+int paletteSelector = 2;
+
 Swarm swarm;
 
 void setup() {
@@ -5,7 +7,7 @@ void setup() {
   fullScreen();
   frameRate(60);
   
-  initializePalette(PaletteOption.THREE);
+  setPalette(paletteSelector);
   swarm = new Swarm(36, false);
 }
 
@@ -13,6 +15,12 @@ void draw() {
   background(palette[0]);
   
   swarm.animate();
-  swarm.repopulate();
+  int culled = swarm.cull();
+  int respawned = swarm.spawn(culled);
+  
+  if (respawned < culled) {
+    println(culled - respawned);
+  }
+  
   swarm.draw();
 }
