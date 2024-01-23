@@ -76,5 +76,12 @@ class Swarm {
       element.draw();
     }
   }
+    
+  public void drawMask() {
+    for (Span span : this.spawnMask) {
+      stroke(255);
+      line(width / 2, span.start, width / 2, span.end);
+    }
+  }
   
 }
